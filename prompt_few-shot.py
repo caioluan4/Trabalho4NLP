@@ -1,5 +1,4 @@
-# NOTA: Substitua estes exemplos pelos 3 pares que você selecionar
-# do training split do dataset Spider.
+
 EXEMPLO_1_NL = "Quantos chefes de departamento têm mais de 55 anos de idade?"
 EXEMPLO_1_SQL = "SELECT count(*) FROM head WHERE age > 55"
 
@@ -14,7 +13,7 @@ def prompt_few_shot(pergunta_nova: str) -> str:
     Cria um prompt few-shot para a tarefa Text-to-SQL,
     incluindo 3 exemplos fixos para guiar o modelo.
     """
-    # Este template deve ser fixo e usado em todas as avaliações de baseline 
+    
     prompt = f"""Sua tarefa é converter perguntas em linguagem natural para consultas SQL. Siga os exemplos abaixo:
 
 ### Exemplo 1
