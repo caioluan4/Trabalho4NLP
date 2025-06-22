@@ -1,5 +1,3 @@
-# --- TAREFA 1: DESENVOLVER PROMPT FEW-SHOT ---
-
 # NOTA: Substitua estes exemplos pelos 3 pares que você selecionar
 # do training split do dataset Spider.
 EXEMPLO_1_NL = "Quantos chefes de departamento têm mais de 55 anos de idade?"
