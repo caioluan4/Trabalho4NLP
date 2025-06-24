@@ -15,7 +15,7 @@ Na pasta `scripts`estão contitos os códigos necessários para rodar todo o tra
   5. `testa_modelo_lora_MMLU.ipynb` testa o modelo com os dois adaptadores nas questões do MMLU
   6. `testa_modelo_lora_SQL.ipynb` testa o modelo com os dois adaptadores nos exemplos do spider
 
-Na pasta custom_metrics tempos salvo o arquivo `avaliador_spider.py`, que contem a métrica do spider implementada.
+Na pasta custom_metrics tempos salvo o arquivo `avaliador_spider.py`, que contem a métrica do spider implementada. Lá também estão os json com os resultados da avaliação na task de text-to-SQL
 
 Checkpoint do modelo utilizado:
 ```
