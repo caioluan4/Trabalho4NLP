@@ -1,0 +1,2011 @@
+{
+    "summary": {
+        "total_from_dev_set": 1034,
+        "total_from_model_results": 200,
+        "total_evaluated": 200,
+        "total_successful": 104,
+        "accuracy": 0.52
+    },
+    "detailed_results": [
+        {
+            "index": 0,
+            "db_id": "concert_singer",
+            "question": "How many singers do we have?",
+            "expected_sql": "SELECT count(*) FROM singer",
+            "generated_sql": "SELECT COUNT(*) FROM singer;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 1,
+            "db_id": "concert_singer",
+            "question": "What is the total number of singers?",
+            "expected_sql": "SELECT count(*) FROM singer",
+            "generated_sql": "SELECT COUNT(*) FROM singer;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 2,
+            "db_id": "concert_singer",
+            "question": "Show name, country, age for all singers ordered by age from the oldest to the youngest.",
+            "expected_sql": "SELECT name ,  country ,  age FROM singer ORDER BY age DESC",
+            "generated_sql": "SELECT S.Name, S.Country, S.Age FROM singer S ORDER BY S.Age DESC;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 3,
+            "db_id": "concert_singer",
+            "question": "What are the names, countries, and ages for every singer in descending order of age?",
+            "expected_sql": "SELECT name ,  country ,  age FROM singer ORDER BY age DESC",
+            "generated_sql": "SELECT S.Name, S.Country, S.Age FROM singer S ORDER BY S.Age DESC",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 4,
+            "db_id": "concert_singer",
+            "question": "What is the average, minimum, and maximum age of all singers from France?",
+            "expected_sql": "SELECT avg(age) ,  min(age) ,  max(age) FROM singer WHERE country  =  'France'",
+            "generated_sql": "SELECT AVG(S.`Age`), MIN(S.`Age`), MAX(S.`Age`) \nFROM `singer` S \nWHERE S.`Country` = 'France';",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 5,
+            "db_id": "concert_singer",
+            "question": "What is the average, minimum, and maximum age for all French singers?",
+            "expected_sql": "SELECT avg(age) ,  min(age) ,  max(age) FROM singer WHERE country  =  'France'",
+            "generated_sql": "SELECT AVG(Age), MIN(Age), MAX(Age) FROM singer WHERE Country = 'France';",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 6,
+            "db_id": "concert_singer",
+            "question": "Show the name and the release year of the song by the youngest singer.",
+            "expected_sql": "SELECT song_name ,  song_release_year FROM singer ORDER BY age LIMIT 1",
+            "generated_sql": "SELECT T1.Name, T1.Song_release_year\nFROM singer AS T1\nWHERE T1.Age = (SELECT MIN(T2.Age) FROM singer AS T2)",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 7,
+            "db_id": "concert_singer",
+            "question": "What are the names and release years for all the songs of the youngest singer?",
+            "expected_sql": "SELECT song_name ,  song_release_year FROM singer ORDER BY age LIMIT 1",
+            "generated_sql": "SELECT T2.Name, T2.Song_Name, T2.Song_release_year\nFROM singer AS T1\nJOIN singer_in_concert AS T3 ON T1.Singer_ID = T3.Singer_ID\nJOIN concert AS T4 ON T3.concert_ID = T4.concert_ID\nWHERE T1.Age = (SELECT MIN(Age) FROM singer)\nORDER BY T1.Name;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: T2.Name"
+        },
+        {
+            "index": 8,
+            "db_id": "concert_singer",
+            "question": "What are all distinct countries where singers above age 20 are from?",
+            "expected_sql": "SELECT DISTINCT country FROM singer WHERE age  >  20",
+            "generated_sql": "SELECT DISTINCT T1.Country FROM singer AS T1 WHERE T1.Age > 20",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 9,
+            "db_id": "concert_singer",
+            "question": "What are  the different countries with singers above age 20?",
+            "expected_sql": "SELECT DISTINCT country FROM singer WHERE age  >  20",
+            "generated_sql": "SELECT DISTINCT T2.Country FROM singer AS T1 JOIN singer_in_concert AS T2 ON T1.Singer_ID = T2.Singer_ID WHERE T1.Age > 20;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: T2.Country"
+        },
+        {
+            "index": 10,
+            "db_id": "concert_singer",
+            "question": "Show all countries and the number of singers in each country.",
+            "expected_sql": "SELECT country ,  count(*) FROM singer GROUP BY country",
+            "generated_sql": "SELECT s.Country, COUNT(*) AS num_singers\nFROM singer AS s\nGROUP BY s.Country;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 11,
+            "db_id": "concert_singer",
+            "question": "How many singers are from each country?",
+            "expected_sql": "SELECT country ,  count(*) FROM singer GROUP BY country",
+            "generated_sql": "SELECT T1.Country, COUNT(*) AS total_singers \nFROM singer AS T1 \nGROUP BY T1.Country",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 12,
+            "db_id": "concert_singer",
+            "question": "List all song names by singers above the average age.",
+            "expected_sql": "SELECT song_name FROM singer WHERE age  >  (SELECT avg(age) FROM singer)",
+            "generated_sql": "SELECT T1.Song_Name \nFROM singer AS T1 \nJOIN singer_in_concert AS T2 ON T1.Singer_ID = T2.Singer_ID \nWHERE T1.Age > (SELECT AVG(Age) FROM singer)",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 13,
+            "db_id": "concert_singer",
+            "question": "What are all the song names by singers who are older than average?",
+            "expected_sql": "SELECT song_name FROM singer WHERE age  >  (SELECT avg(age) FROM singer)",
+            "generated_sql": "SELECT T1.Song_Name FROM singer AS T1 WHERE T1.Age > (SELECT AVG(Age) FROM singer)",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 14,
+            "db_id": "concert_singer",
+            "question": "Show location and name for all stadiums with a capacity between 5000 and 10000.",
+            "expected_sql": "SELECT LOCATION ,  name FROM stadium WHERE capacity BETWEEN 5000 AND 10000",
+            "generated_sql": "SELECT T1.Location, T1.Name FROM `stadium` AS T1 WHERE T1.Capacity BETWEEN 5000 AND 10000",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 15,
+            "db_id": "concert_singer",
+            "question": "What are the locations and names of all stations with capacity between 5000 and 10000?",
+            "expected_sql": "SELECT LOCATION ,  name FROM stadium WHERE capacity BETWEEN 5000 AND 10000",
+            "generated_sql": "SELECT T1.Location, T1.Name FROM stadium AS T1 WHERE T1.Capacity BETWEEN 5000 AND 10000",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 16,
+            "db_id": "concert_singer",
+            "question": "What is the maximum capacity and the average of all stadiums ?",
+            "expected_sql": "select max(capacity), average from stadium",
+            "generated_sql": "SELECT MAX(Capacity), AVG(Capacity) FROM stadium",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 17,
+            "db_id": "concert_singer",
+            "question": "What is the average and maximum capacities for all stadiums ?",
+            "expected_sql": "select avg(capacity) ,  max(capacity) from stadium",
+            "generated_sql": "SELECT AVG(T1.Capacity), MAX(T1.Capacity) FROM stadium AS T1;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 18,
+            "db_id": "concert_singer",
+            "question": "What is the name and capacity for the stadium with highest average attendance?",
+            "expected_sql": "SELECT name ,  capacity FROM stadium ORDER BY average DESC LIMIT 1",
+            "generated_sql": "SELECT s.Name, s.Capacity \nFROM stadium s \nORDER BY s.Average DESC \nLIMIT 1;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 19,
+            "db_id": "concert_singer",
+            "question": "What is the name and capacity for the stadium with the highest average attendance?",
+            "expected_sql": "SELECT name ,  capacity FROM stadium ORDER BY average DESC LIMIT 1",
+            "generated_sql": "SELECT T1.Name, T1.Capacity FROM stadium AS T1 WHERE T1.Average = (SELECT MAX(Average) FROM stadium)",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 20,
+            "db_id": "concert_singer",
+            "question": "How many concerts are there in year 2014 or 2015?",
+            "expected_sql": "SELECT count(*) FROM concert WHERE YEAR  =  2014 OR YEAR  =  2015",
+            "generated_sql": "SELECT COUNT(*) FROM concert WHERE Year IN ('2014', '2015')",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 21,
+            "db_id": "concert_singer",
+            "question": "How many concerts occurred in 2014 or 2015?",
+            "expected_sql": "SELECT count(*) FROM concert WHERE YEAR  =  2014 OR YEAR  =  2015",
+            "generated_sql": "SELECT COUNT(*) FROM concert WHERE Year IN ('2014', '2015')",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 22,
+            "db_id": "concert_singer",
+            "question": "Show the stadium name and the number of concerts in each stadium.",
+            "expected_sql": "SELECT T2.name ,  count(*) FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id GROUP BY T1.stadium_id",
+            "generated_sql": "SELECT S.Name, COUNT(*) AS num_concerts \nFROM concert \nJOIN stadium AS S ON concert.Stadium_ID = S.Stadium_ID \nGROUP BY S.Name;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 23,
+            "db_id": "concert_singer",
+            "question": "For each stadium, how many concerts play there?",
+            "expected_sql": "SELECT T2.name ,  count(*) FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id GROUP BY T1.stadium_id",
+            "generated_sql": "SELECT T1.Stadium_ID, COUNT(*) AS concert_count\nFROM concert AS T1\nGROUP BY T1.Stadium_ID",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 24,
+            "db_id": "concert_singer",
+            "question": "Show the stadium name and capacity with most number of concerts in year 2014 or after.",
+            "expected_sql": "SELECT T2.name ,  T2.capacity FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.year  >=  2014 GROUP BY T2.stadium_id ORDER BY count(*) DESC LIMIT 1",
+            "generated_sql": "SELECT T1.Name, T1.Capacity \nFROM concert AS T1 \nJOIN stadium AS T2 ON T1.Stadium_ID = T2.Stadium_ID \nGROUP BY T1.Stadium_ID, T1.Name, T1.Capacity \nORDER BY COUNT(*) DESC LIMIT 1 \nWHERE T1.Year >= '2014';",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: near \"WHERE\": syntax error"
+        },
+        {
+            "index": 25,
+            "db_id": "concert_singer",
+            "question": "What is the name and capacity of the stadium with the most concerts after 2013 ?",
+            "expected_sql": "select t2.name ,  t2.capacity from concert as t1 join stadium as t2 on t1.stadium_id  =  t2.stadium_id where t1.year  >  2013 group by t2.stadium_id order by count(*) desc limit 1",
+            "generated_sql": "SELECT T1.Name, T1.Capacity\nFROM stadium AS T1\nJOIN concert AS T2 ON T1.Stadium_ID = T2.Stadium_ID\nWHERE T2.Year > '2013'\nGROUP BY T1.Stadium_ID, T1.Name, T1.Capacity\nORDER BY COUNT(T2.concert_ID) DESC\nLIMIT 1;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 26,
+            "db_id": "concert_singer",
+            "question": "Which year has most number of concerts?",
+            "expected_sql": "SELECT YEAR FROM concert GROUP BY YEAR ORDER BY count(*) DESC LIMIT 1",
+            "generated_sql": "SELECT DISTINCT T1.Year FROM concert AS T1 GROUP BY T1.Year ORDER BY COUNT(*) DESC LIMIT 1;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 27,
+            "db_id": "concert_singer",
+            "question": "What is the year that had the most concerts?",
+            "expected_sql": "SELECT YEAR FROM concert GROUP BY YEAR ORDER BY count(*) DESC LIMIT 1",
+            "generated_sql": "SELECT DISTINCT T1.Year FROM concert AS T1 GROUP BY T1.Year ORDER BY COUNT(*) DESC LIMIT 1;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 28,
+            "db_id": "concert_singer",
+            "question": "Show the stadium names without any concert.",
+            "expected_sql": "SELECT name FROM stadium WHERE stadium_id NOT IN (SELECT stadium_id FROM concert)",
+            "generated_sql": "SELECT Name FROM stadium WHERE NOT EXISTS (SELECT 1 FROM concert WHERE concert.Stadium_ID = stadium.Stadium_ID);",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 29,
+            "db_id": "concert_singer",
+            "question": "What are the names of the stadiums without any concerts?",
+            "expected_sql": "SELECT name FROM stadium WHERE stadium_id NOT IN (SELECT stadium_id FROM concert)",
+            "generated_sql": "SELECT DISTINCT T1.Name FROM stadium AS T1 LEFT JOIN concert AS T2 ON T1.Stadium_ID = T2.Stadium_ID WHERE T2.concert_ID IS NULL;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 30,
+            "db_id": "concert_singer",
+            "question": "Show countries where a singer above age 40 and a singer below 30 are from.",
+            "expected_sql": "SELECT country FROM singer WHERE age  >  40 INTERSECT SELECT country FROM singer WHERE age  <  30",
+            "generated_sql": "SELECT T1.Country FROM singer AS T1 WHERE T1.Age > 40 AND EXISTS (SELECT * FROM singer AS T2 WHERE T2.Age < 30 AND T1.Country = T2.Country);",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 31,
+            "db_id": "concert_singer",
+            "question": "Show names for all stadiums except for stadiums having a concert in year 2014.",
+            "expected_sql": "SELECT name FROM stadium EXCEPT SELECT T2.name FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.year  =  2014",
+            "generated_sql": "SELECT Name FROM stadium WHERE Stadium_ID NOT IN (SELECT T1.Stadium_ID FROM concert AS T1 WHERE T1.Year = '2014')",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 32,
+            "db_id": "concert_singer",
+            "question": "What are the names of all stadiums that did not have a concert in 2014?",
+            "expected_sql": "SELECT name FROM stadium EXCEPT SELECT T2.name FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.year  =  2014",
+            "generated_sql": "SELECT T1.Name FROM stadium AS T1 LEFT JOIN concert AS T2 ON T1.Stadium_ID = T2.Stadium_ID WHERE T2.concert_ID IS NULL AND T2.Year = '2014'",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 33,
+            "db_id": "concert_singer",
+            "question": "Show the name and theme for all concerts and the number of singers in each concert.",
+            "expected_sql": "SELECT T2.concert_name ,  T2.theme ,  count(*) FROM singer_in_concert AS T1 JOIN concert AS T2 ON T1.concert_id  =  T2.concert_id GROUP BY T2.concert_id",
+            "generated_sql": "SELECT T1.concert_Name, T1.Theme, COUNT(T2.Singer_ID) AS num_singers \nFROM concert AS T1 \nJOIN singer_in_concert AS T2 ON T1.concert_ID = T2.concert_ID \nGROUP BY T1.concert_Name, T1.Theme;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 34,
+            "db_id": "concert_singer",
+            "question": "What are the names , themes , and number of singers for every concert ?",
+            "expected_sql": "select t2.concert_name ,  t2.theme ,  count(*) from singer_in_concert as t1 join concert as t2 on t1.concert_id  =  t2.concert_id group by t2.concert_id",
+            "generated_sql": "SELECT T1.concert_Name, T1.Theme, COUNT(*) AS num_singers\nFROM concert AS T1\nJOIN singer_in_concert AS T2 ON T1.concert_ID = T2.concert_ID\nGROUP BY T1.concert_Name, T1.Theme;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 35,
+            "db_id": "concert_singer",
+            "question": "List singer names and number of concerts for each singer.",
+            "expected_sql": "SELECT T2.name ,  count(*) FROM singer_in_concert AS T1 JOIN singer AS T2 ON T1.singer_id  =  T2.singer_id GROUP BY T2.singer_id",
+            "generated_sql": "SELECT s.Name, COUNT(c.concert_ID) \nFROM singer AS s \nJOIN singer_in_concert AS sic ON s.Singer_ID = sic.Singer_ID \nJOIN concert AS c ON sic.concert_ID = c.concert_ID \nGROUP BY s.Name",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 36,
+            "db_id": "concert_singer",
+            "question": "What are the names of the singers and number of concerts for each person?",
+            "expected_sql": "SELECT T2.name ,  count(*) FROM singer_in_concert AS T1 JOIN singer AS T2 ON T1.singer_id  =  T2.singer_id GROUP BY T2.singer_id",
+            "generated_sql": "SELECT S.Name, COUNT(C.concert_ID) AS num_concerts\nFROM singer S\nJOIN singer_in_concert SC ON S.Singer_ID = SC.Singer_ID\nGROUP BY S.Singer_ID, S.Name",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: C.concert_ID"
+        },
+        {
+            "index": 37,
+            "db_id": "concert_singer",
+            "question": "List all singer names in concerts in year 2014.",
+            "expected_sql": "SELECT T2.name FROM singer_in_concert AS T1 JOIN singer AS T2 ON T1.singer_id  =  T2.singer_id JOIN concert AS T3 ON T1.concert_id  =  T3.concert_id WHERE T3.year  =  2014",
+            "generated_sql": "SELECT T1.Name FROM singer AS T1 JOIN singer_in_concert AS T2 ON T1.Singer_ID = T2.Singer_ID JOIN concert AS T3 ON T2.concert_ID = T3.concert_ID WHERE T3.Year = '2014';",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 38,
+            "db_id": "concert_singer",
+            "question": "What are the names of the singers who performed in a concert in 2014?",
+            "expected_sql": "SELECT T2.name FROM singer_in_concert AS T1 JOIN singer AS T2 ON T1.singer_id  =  T2.singer_id JOIN concert AS T3 ON T1.concert_id  =  T3.concert_id WHERE T3.year  =  2014",
+            "generated_sql": "SELECT S.Name FROM singer AS S JOIN singer_in_concert AS SC ON S.Singer_ID = SC.Singer_ID JOIN concert AS C ON SC.concert_ID = C.concert_ID WHERE C.Year = '2014';",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 39,
+            "db_id": "concert_singer",
+            "question": "what is the name and nation of the singer who have a song having 'Hey' in its name?",
+            "expected_sql": "SELECT name ,  country FROM singer WHERE song_name LIKE '%Hey%'",
+            "generated_sql": "SELECT T1.Name, T1.Country FROM singer AS T1 WHERE EXISTS (SELECT 1 FROM song WHERE song_Name LIKE '%Hey%' AND song_Name = T1.Song_Name);",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such table: song"
+        },
+        {
+            "index": 40,
+            "db_id": "concert_singer",
+            "question": "What is the name and country of origin of every singer who has a song with the word 'Hey' in its title?",
+            "expected_sql": "SELECT name ,  country FROM singer WHERE song_name LIKE '%Hey%'",
+            "generated_sql": "SELECT S.Name, S.Country \nFROM singer AS S \nJOIN singer_in_concert AS SC ON S.Singer_ID = SC.Singer_ID \nWHERE SC.Song_Name LIKE '%Hey%';",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: SC.Song_Name"
+        },
+        {
+            "index": 41,
+            "db_id": "concert_singer",
+            "question": "Find the name and location of the stadiums which some concerts happened in the years of both 2014 and 2015.",
+            "expected_sql": "SELECT T2.name ,  T2.location FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.Year  =  2014 INTERSECT SELECT T2.name ,  T2.location FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.Year  =  2015",
+            "generated_sql": "SELECT T1.Name, T1.Location\nFROM concert AS T1\nWHERE T1.Year IN ('2014', '2015')\nGROUP BY T1.Name, T1.Location\nHAVING COUNT(DISTINCT T1.Year) = 2",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: T1.Name"
+        },
+        {
+            "index": 42,
+            "db_id": "concert_singer",
+            "question": "What are the names and locations of the stadiums that had concerts that occurred in both 2014 and 2015?",
+            "expected_sql": "SELECT T2.name ,  T2.location FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.Year  =  2014 INTERSECT SELECT T2.name ,  T2.location FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.Year  =  2015",
+            "generated_sql": "SELECT s.Location \nFROM concert AS c \nJOIN stadium AS s ON c.Stadium_ID = s.Stadium_ID \nWHERE c.Year IN ('2014', '2015') \nGROUP BY s.Location \nHAVING COUNT(DISTINCT c.concert_ID) > 1;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 43,
+            "db_id": "concert_singer",
+            "question": "Find the number of concerts happened in the stadium with the highest capacity .",
+            "expected_sql": "select count(*) from concert where stadium_id = (select stadium_id from stadium order by capacity desc limit 1)",
+            "generated_sql": "SELECT COUNT(*) FROM concert WHERE Stadium_ID IN (SELECT Stadium_ID FROM stadium WHERE Capacity = (SELECT MAX(Capacity) FROM stadium));",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 44,
+            "db_id": "concert_singer",
+            "question": "What are the number of concerts that occurred in the stadium with the largest capacity ?",
+            "expected_sql": "select count(*) from concert where stadium_id = (select stadium_id from stadium order by capacity desc limit 1)",
+            "generated_sql": "SELECT COUNT(*) FROM concert WHERE Stadium_ID IN (SELECT Stadium_ID FROM stadium ORDER BY Capacity DESC LIMIT 1)",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 45,
+            "db_id": "pets_1",
+            "question": "Find the number of pets whose weight is heavier than 10.",
+            "expected_sql": "SELECT count(*) FROM pets WHERE weight  >  10",
+            "generated_sql": "SELECT COUNT(*) FROM Pets WHERE weight > 10",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 46,
+            "db_id": "pets_1",
+            "question": "How many pets have a greater weight than 10?",
+            "expected_sql": "SELECT count(*) FROM pets WHERE weight  >  10",
+            "generated_sql": "SELECT COUNT(*) FROM Pets WHERE weight > 10",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 47,
+            "db_id": "pets_1",
+            "question": "Find the weight of the youngest dog.",
+            "expected_sql": "SELECT weight FROM pets ORDER BY pet_age LIMIT 1",
+            "generated_sql": "SELECT weight FROM Pets WHERE PetType = 'dog' AND pet_age = (SELECT MIN(pet_age) FROM Pets WHERE PetType = 'dog');",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 48,
+            "db_id": "pets_1",
+            "question": "How much does the youngest dog weigh?",
+            "expected_sql": "SELECT weight FROM pets ORDER BY pet_age LIMIT 1",
+            "generated_sql": "SELECT weight FROM Pets WHERE PetType = 'dog' AND pet_age = (SELECT MIN(pet_age) FROM Pets WHERE PetType = 'dog');",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 49,
+            "db_id": "pets_1",
+            "question": "Find the maximum weight for each type of pet. List the maximum weight and pet type.",
+            "expected_sql": "SELECT max(weight) ,  petType FROM pets GROUP BY petType",
+            "generated_sql": "SELECT T1.PetType, MAX(T1.weight) FROM Pets AS T1 GROUP BY T1.PetType",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 50,
+            "db_id": "pets_1",
+            "question": "List the maximum weight and type for each type of pet.",
+            "expected_sql": "SELECT max(weight) ,  petType FROM pets GROUP BY petType",
+            "generated_sql": "SELECT T1.PetType, MAX(T1.weight) FROM Pets AS T1 GROUP BY T1.PetType",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 51,
+            "db_id": "pets_1",
+            "question": "Find number of pets owned by students who are older than 20.",
+            "expected_sql": "SELECT count(*) FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid WHERE T1.age  >  20",
+            "generated_sql": "SELECT COUNT(*) FROM Pets AS T1 JOIN Has_Pet AS T2 ON T1.PetID = T2.PetID JOIN Student AS T3 ON T2.StuID = T3.StuID WHERE T3.Age > 20",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 52,
+            "db_id": "pets_1",
+            "question": "How many pets are owned by students that have an age greater than 20?",
+            "expected_sql": "SELECT count(*) FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid WHERE T1.age  >  20",
+            "generated_sql": "SELECT COUNT(*) \nFROM Pets AS T1 JOIN Has_Pet AS T2 ON T1.PetID = T2.PetID JOIN Student AS T3 ON T2.StuID = T3.StuID \nWHERE T3.Age > 20;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 53,
+            "db_id": "pets_1",
+            "question": "Find the number of dog pets that are raised by female students (with sex F).",
+            "expected_sql": "SELECT count(*) FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T2.petid  =  T3.petid WHERE T1.sex  =  'F' AND T3.pettype  =  'dog'",
+            "generated_sql": "SELECT COUNT(*) FROM Pets AS T1 JOIN Has_Pet AS T2 ON T1.PetID = T2.PetID JOIN Student AS T3 ON T2.StuID = T3.StuID WHERE T3.Sex = 'F' AND T1.PetType = 'dog';",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 54,
+            "db_id": "pets_1",
+            "question": "How many dog pets are raised by female students?",
+            "expected_sql": "SELECT count(*) FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T2.petid  =  T3.petid WHERE T1.sex  =  'F' AND T3.pettype  =  'dog'",
+            "generated_sql": "SELECT COUNT(*) FROM Students AS T1 JOIN Has_Pet AS T2 ON T1.StuID = T2.StuID JOIN Pets AS T3 ON T2.PetID = T3.PetID WHERE T1.Sex = 'Female' AND T3.PetType = 'dog';",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such table: Students"
+        },
+        {
+            "index": 55,
+            "db_id": "pets_1",
+            "question": "Find the number of distinct type of pets.",
+            "expected_sql": "SELECT count(DISTINCT pettype) FROM pets",
+            "generated_sql": "SELECT COUNT(DISTINCT PetType) FROM Pets;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 56,
+            "db_id": "pets_1",
+            "question": "How many different types of pet are there?",
+            "expected_sql": "SELECT count(DISTINCT pettype) FROM pets",
+            "generated_sql": "SELECT DISTINCT PetType FROM Pets",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 57,
+            "db_id": "pets_1",
+            "question": "Find the first name of students who have cat or dog pet.",
+            "expected_sql": "SELECT DISTINCT T1.Fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat' OR T3.pettype  =  'dog'",
+            "generated_sql": "SELECT Fname FROM Student WHERE StuID IN (SELECT StuID FROM Has_Pet WHERE PetID IN (SELECT PetID FROM Pets WHERE PetType IN ('cat', 'dog')))",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 58,
+            "db_id": "pets_1",
+            "question": "What are the first names of every student who has a cat or dog as a pet?",
+            "expected_sql": "SELECT DISTINCT T1.Fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat' OR T3.pettype  =  'dog'",
+            "generated_sql": "SELECT Fname FROM Student WHERE StuID IN (SELECT StuID FROM Has_Pet WHERE PetID IN (SELECT PetID FROM Pets WHERE PetType IN ('cat', 'dog')))",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 59,
+            "db_id": "pets_1",
+            "question": "Find the first name of students who have both cat and dog pets .",
+            "expected_sql": "select t1.fname from student as t1 join has_pet as t2 on t1.stuid  =  t2.stuid join pets as t3 on t3.petid  =  t2.petid where t3.pettype  =  'cat' intersect select t1.fname from student as t1 join has_pet as t2 on t1.stuid  =  t2.stuid join pets as t3 on t3.petid  =  t2.petid where t3.pettype  =  'dog'",
+            "generated_sql": "SELECT Fname FROM Student WHERE StuID IN (SELECT StuID FROM Has_Pet WHERE PetID IN (SELECT PetID FROM Pets WHERE PetType IN ('cat', 'dog')))",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 60,
+            "db_id": "pets_1",
+            "question": "What are the students' first names who have both cats and dogs as pets?",
+            "expected_sql": "SELECT T1.Fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat' INTERSECT SELECT T1.Fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'dog'",
+            "generated_sql": "SELECT S.Fname \nFROM Student S \nJOIN Has_Pet HP ON S.StuID = HP.StuID \nJOIN Pets P ON HP.PetID = P.PetID \nWHERE P.pet_age > 0 AND P.pet_age < 5 AND EXISTS (SELECT 1 FROM Pets P2 WHERE P2.StuID = HP.StuID AND P2.PetType = 'cat') AND EXISTS (SELECT 1 FROM Pets P3 WHERE P3.StuID = HP.StuID AND P3.PetType = 'dog')",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: P2.StuID"
+        },
+        {
+            "index": 61,
+            "db_id": "pets_1",
+            "question": "Find the major and age of students who do not have a cat pet.",
+            "expected_sql": "SELECT major ,  age FROM student WHERE stuid NOT IN (SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat')",
+            "generated_sql": "SELECT S.Fname, S.Age FROM Student S LEFT JOIN Has_Pet HP ON S.StuID = HP.StuID LEFT JOIN Pets P ON HP.PetID = P.PetID WHERE P.PetType!= 'cat'",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 62,
+            "db_id": "pets_1",
+            "question": "What major is every student who does not own a cat as a pet, and also how old are they?",
+            "expected_sql": "SELECT major ,  age FROM student WHERE stuid NOT IN (SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat')",
+            "generated_sql": "SELECT S.Fname, S.Age \nFROM Student S \nLEFT JOIN Has_Pet HP ON S.StuID = HP.StuID \nWHERE HP.StuID IS NULL AND S.Major IS NOT NULL",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 63,
+            "db_id": "pets_1",
+            "question": "Find the id of students who do not have a cat pet.",
+            "expected_sql": "SELECT stuid FROM student EXCEPT SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat'",
+            "generated_sql": "SELECT S.StuID \nFROM Student S LEFT JOIN Has_Pet HP ON S.StuID = HP.StuID LEFT JOIN Pets P ON HP.PetID = P.PetID \nWHERE P.PetType!= 'cat';",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 64,
+            "db_id": "pets_1",
+            "question": "What are the ids of the students who do not own cats as pets?",
+            "expected_sql": "SELECT stuid FROM student EXCEPT SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat'",
+            "generated_sql": "SELECT T1.StuID \nFROM Student AS T1 \nLEFT JOIN Has_Pet AS T2 ON T1.StuID = T2.StuID \nWHERE T2.PetID IS NULL OR T2.PetID NOT IN (SELECT PetID FROM Pets WHERE PetType = 'cat')",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 65,
+            "db_id": "pets_1",
+            "question": "Find the first name and age of students who have a dog but do not have a cat as a pet.",
+            "expected_sql": "SELECT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'dog' AND T1.stuid NOT IN (SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat')",
+            "generated_sql": "SELECT S.Fname, S.Age FROM Student S WHERE S.StuID IN (SELECT HP.StuID FROM Has_Pet HP WHERE HP.PetID IN (SELECT P.PetID FROM Pets P WHERE P.PetType = 'dog')) AND S.StuID NOT IN (SELECT HP2.StuID FROM Has_Pet HP2 WHERE HP2.PetID IN (SELECT P2.PetID FROM Pets P2 WHERE P2.PetType = 'cat'));",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 66,
+            "db_id": "pets_1",
+            "question": "What is the first name of every student who has a dog but does not have a cat?",
+            "expected_sql": "SELECT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'dog' AND T1.stuid NOT IN (SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat')",
+            "generated_sql": "SELECT Fname FROM Student WHERE StuID IN (SELECT StuID FROM Has_Pet WHERE PetID IN (SELECT PetID FROM Pets WHERE PetType = 'dog')) AND StuID NOT IN (SELECT StuID FROM Has_Pet WHERE PetID IN (SELECT PetID FROM Pets WHERE PetType = 'cat'));",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 67,
+            "db_id": "pets_1",
+            "question": "Find the type and weight of the youngest pet.",
+            "expected_sql": "SELECT pettype ,  weight FROM pets ORDER BY pet_age LIMIT 1",
+            "generated_sql": "SELECT T2.PetType, T2.weight FROM Pets AS T2 WHERE T2.pet_age = (SELECT MIN(Pet_age) FROM Pets)",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 68,
+            "db_id": "pets_1",
+            "question": "What type of pet is the youngest animal, and how much does it weigh?",
+            "expected_sql": "SELECT pettype ,  weight FROM pets ORDER BY pet_age LIMIT 1",
+            "generated_sql": "SELECT T2.PetType, T2.weight FROM Pets AS T2 JOIN Has_Pet AS T1 ON T2.PetID = T1.PetID WHERE pet_age = (SELECT MIN(pet_age) FROM Pets)",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 69,
+            "db_id": "pets_1",
+            "question": "Find the id and weight of all pets whose age is older than 1.",
+            "expected_sql": "SELECT petid ,  weight FROM pets WHERE pet_age  >  1",
+            "generated_sql": "SELECT P.PetID, P.weight FROM Pets AS P WHERE P.pet_age > 1",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 70,
+            "db_id": "pets_1",
+            "question": "What is the id and weight of every pet who is older than 1?",
+            "expected_sql": "SELECT petid ,  weight FROM pets WHERE pet_age  >  1",
+            "generated_sql": "SELECT P.PetID, P.weight FROM Pets AS P WHERE P.pet_age > 1",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 71,
+            "db_id": "pets_1",
+            "question": "Find the average and maximum age for each type of pet.",
+            "expected_sql": "SELECT avg(pet_age) ,  max(pet_age) ,  pettype FROM pets GROUP BY pettype",
+            "generated_sql": "SELECT \n  T1.PetType, AVG(T1.pet_age) AS avg_age, MAX(T1.pet_age) AS max_age \nFROM \n  Pets AS T1 \nGROUP BY \n  T1.PetType;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 72,
+            "db_id": "pets_1",
+            "question": "What is the average and maximum age for each pet type?",
+            "expected_sql": "SELECT avg(pet_age) ,  max(pet_age) ,  pettype FROM pets GROUP BY pettype",
+            "generated_sql": "SELECT T1.PetType, AVG(T2.pet_age) AS avg_age, MAX(T2.pet_age) AS max_age \nFROM Has_Pet AS T1 \nJOIN Pets AS T2 ON T1.PetID = T2.PetID \nGROUP BY T1.PetType",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: T1.PetType"
+        },
+        {
+            "index": 73,
+            "db_id": "pets_1",
+            "question": "Find the average weight for each pet type.",
+            "expected_sql": "SELECT avg(weight) ,  pettype FROM pets GROUP BY pettype",
+            "generated_sql": "SELECT PetType, AVG(weight) FROM Pets GROUP BY PetType",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 74,
+            "db_id": "pets_1",
+            "question": "What is the average weight for each type of pet?",
+            "expected_sql": "SELECT avg(weight) ,  pettype FROM pets GROUP BY pettype",
+            "generated_sql": "SELECT T1.PetType, AVG(T2.weight) AS average_weight\nFROM Pets AS T1\nJOIN Has_Pet AS T3 ON T1.PetID = T3.PetID\nGROUP BY T1.PetType",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: T2.weight"
+        },
+        {
+            "index": 75,
+            "db_id": "pets_1",
+            "question": "Find the first name and age of students who have a pet.",
+            "expected_sql": "SELECT DISTINCT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid",
+            "generated_sql": "SELECT S.Fname, S.Age FROM Student S JOIN Has_Pet HP ON S.StuID = HP.StuID",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 76,
+            "db_id": "pets_1",
+            "question": "What are the different first names and ages of the students who do have pets?",
+            "expected_sql": "SELECT DISTINCT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid",
+            "generated_sql": "SELECT S.Fname, S.Age FROM Student S JOIN Has_Pet HP ON S.StuID = HP.StuID WHERE HP.StuID IS NOT NULL;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 77,
+            "db_id": "pets_1",
+            "question": "Find the id of the pet owned by student whose last name is ‘Smith’.",
+            "expected_sql": "SELECT T2.petid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid WHERE T1.Lname  =  'Smith'",
+            "generated_sql": "SELECT PetID FROM Pets JOIN Has_Pet ON Pets.PetID = Has_Pet.PetID WHERE Has_Pet.StuID IN (SELECT StuID FROM Student WHERE LName = 'Smith')",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: ambiguous column name: PetID"
+        },
+        {
+            "index": 78,
+            "db_id": "pets_1",
+            "question": "What is the id of the pet owned by the student whose last name is 'Smith'?",
+            "expected_sql": "SELECT T2.petid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid WHERE T1.Lname  =  'Smith'",
+            "generated_sql": "SELECT T1.PetID \nFROM Has_Pet AS T1 \nJOIN Student AS T2 ON T1.StuID = T2.StuID \nWHERE T2.LName = 'Smith';",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 79,
+            "db_id": "pets_1",
+            "question": "Find the number of pets for each student who has any pet and student id.",
+            "expected_sql": "SELECT count(*) ,  T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid GROUP BY T1.stuid",
+            "generated_sql": "SELECT T1.StuID, COUNT(*) FROM Student AS T1 LEFT JOIN Has_Pet AS T2 ON T1.StuID = T2.StuID GROUP BY T1.StuID;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 80,
+            "db_id": "pets_1",
+            "question": "For students who have pets , how many pets does each student have ? list their ids instead of names .",
+            "expected_sql": "select count(*) ,  t1.stuid from student as t1 join has_pet as t2 on t1.stuid  =  t2.stuid group by t1.stuid",
+            "generated_sql": "SELECT StuID, COUNT(*) FROM Has_Pet GROUP BY StuID",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 81,
+            "db_id": "pets_1",
+            "question": "Find the first name and gender of student who have more than one pet.",
+            "expected_sql": "SELECT T1.fname ,  T1.sex FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid GROUP BY T1.stuid HAVING count(*)  >  1",
+            "generated_sql": "SELECT S.Fname, S.Sex FROM Student S JOIN Has_Pet HP ON S.StuID = HP.StuID GROUP BY S.StuID, S.Fname, S.Sex HAVING COUNT(*) > 1;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 82,
+            "db_id": "pets_1",
+            "question": "What is the first name and gender of the all the students who have more than one pet?",
+            "expected_sql": "SELECT T1.fname ,  T1.sex FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid GROUP BY T1.stuid HAVING count(*)  >  1",
+            "generated_sql": "SELECT S.Fname, S.Sex\nFROM Student S\nJOIN Has_Pet HP ON S.StuID = HP.StuID\nGROUP BY S.Fname, S.Sex\nHAVING COUNT(HP.StuID) > 1",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 83,
+            "db_id": "pets_1",
+            "question": "Find the last name of the student who has a cat that is age 3.",
+            "expected_sql": "SELECT T1.lname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pet_age  =  3 AND T3.pettype  =  'cat'",
+            "generated_sql": "SELECT T1.LName FROM Student AS T1 JOIN Has_Pet AS T2 ON T1.StuID = T2.StuID JOIN Pets AS T3 ON T2.PetID = T3.PetID WHERE T3.pet_age = 3 ORDER BY T1.StuID DESC LIMIT 1",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 84,
+            "db_id": "pets_1",
+            "question": "What is the last name of the student who has a cat that is 3 years old?",
+            "expected_sql": "SELECT T1.lname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pet_age  =  3 AND T3.pettype  =  'cat'",
+            "generated_sql": "SELECT LName FROM Student WHERE StuID IN (SELECT StuID FROM Has_Pet WHERE PetID IN (SELECT PetID FROM Pets WHERE pet_age = 3))",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 85,
+            "db_id": "pets_1",
+            "question": "Find the average age of students who do not have any pet .",
+            "expected_sql": "select avg(age) from student where stuid not in (select stuid from has_pet)",
+            "generated_sql": "SELECT AVG(S.`Age`) \nFROM `Student` AS S \nLEFT JOIN `Has_Pet` AS HP ON S.`StuID` = HP.`StuID` \nWHERE HP.`StuID` IS NULL;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 86,
+            "db_id": "pets_1",
+            "question": "What is the average age for all students who do not own any pets ?",
+            "expected_sql": "select avg(age) from student where stuid not in (select stuid from has_pet)",
+            "generated_sql": "SELECT AVG(S.`Age`) \nFROM `Student` S \nWHERE S.`StuID` NOT IN (SELECT `StuID` FROM `Has_Pet`);",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 87,
+            "db_id": "car_1",
+            "question": "How many continents are there?",
+            "expected_sql": "SELECT count(*) FROM CONTINENTS;",
+            "generated_sql": "SELECT COUNT(*) FROM continents",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 88,
+            "db_id": "car_1",
+            "question": "What is the number of continents?",
+            "expected_sql": "SELECT count(*) FROM CONTINENTS;",
+            "generated_sql": "SELECT COUNT(*) FROM continents;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 89,
+            "db_id": "car_1",
+            "question": "How many countries does each continent have? List the continent id, continent name and the number of countries.",
+            "expected_sql": "SELECT T1.ContId ,  T1.Continent ,  count(*) FROM CONTINENTS AS T1 JOIN COUNTRIES AS T2 ON T1.ContId  =  T2.Continent GROUP BY T1.ContId;",
+            "generated_sql": "SELECT C1.Continent, COUNT(C2.CountryId) AS CountryCount \nFROM continents C1 \nJOIN countries C2 ON C1.ContId = C2.Continent \nGROUP BY C1.Continent",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 90,
+            "db_id": "car_1",
+            "question": "For each continent, list its id, name, and how many countries it has?",
+            "expected_sql": "SELECT T1.ContId ,  T1.Continent ,  count(*) FROM CONTINENTS AS T1 JOIN COUNTRIES AS T2 ON T1.ContId  =  T2.Continent GROUP BY T1.ContId;",
+            "generated_sql": "SELECT T1.ContId, T1.Continent, COUNT(T2.CountryId) AS NumCountries\nFROM continents AS T1\nJOIN countries AS T2 ON T1.ContId = T2.Continent\nGROUP BY T1.ContId, T1.Continent",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 91,
+            "db_id": "car_1",
+            "question": "How many countries are listed?",
+            "expected_sql": "SELECT count(*) FROM COUNTRIES;",
+            "generated_sql": "SELECT COUNT(*) FROM countries",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 92,
+            "db_id": "car_1",
+            "question": "How many countries exist?",
+            "expected_sql": "SELECT count(*) FROM COUNTRIES;",
+            "generated_sql": "SELECT COUNT(*) FROM countries",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 93,
+            "db_id": "car_1",
+            "question": "How many models does each car maker produce? List maker full name, id and the number.",
+            "expected_sql": "SELECT T1.FullName ,  T1.Id ,  count(*) FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker GROUP BY T1.Id;",
+            "generated_sql": "SELECT T1.Maker, T1.Id, COUNT(*) \nFROM car_makers AS T1 \nJOIN model_list AS T2 ON T1.Id = T2.Maker \nGROUP BY T1.Id, T1.Maker, T1.FullName",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 94,
+            "db_id": "car_1",
+            "question": "What is the full name of each car maker, along with its id and how many models it produces?",
+            "expected_sql": "SELECT T1.FullName ,  T1.Id ,  count(*) FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker GROUP BY T1.Id;",
+            "generated_sql": "SELECT T1.Id, T1.FullName, COUNT(T2.ModelId) AS ModelCount\nFROM car_makers AS T1\nJOIN model_list AS T2 ON T1.Id = T2.Maker\nGROUP BY T1.Id, T1.FullName",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 95,
+            "db_id": "car_1",
+            "question": "Which model of the car has the minimum horsepower?",
+            "expected_sql": "SELECT T1.Model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id ORDER BY T2.horsepower ASC LIMIT 1;",
+            "generated_sql": "SELECT Model FROM car_names AS T1 JOIN model_list AS T2 ON T1.Make = T2.Maker JOIN cars_data AS T3 ON T1.MakeId = T3.Id WHERE T3.Horsepower = (SELECT MIN(T4.Horsepower) FROM cars_data AS T4)",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: ambiguous column name: Model"
+        },
+        {
+            "index": 96,
+            "db_id": "car_1",
+            "question": "What is the model of the car with the smallest amount of horsepower?",
+            "expected_sql": "SELECT T1.Model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id ORDER BY T2.horsepower ASC LIMIT 1;",
+            "generated_sql": "SELECT T2.Model FROM car_names AS T1 JOIN model_list AS T2 ON T1.MakeId = T2.Maker WHERE T1.Model = (SELECT MIN(T3.Horsepower) FROM car_names AS T3);",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: T3.Horsepower"
+        },
+        {
+            "index": 97,
+            "db_id": "car_1",
+            "question": "Find the model of the car whose weight is below the average weight.",
+            "expected_sql": "SELECT T1.model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T2.Weight  <  (SELECT avg(Weight) FROM CARS_DATA)",
+            "generated_sql": "SELECT Model FROM car_names AS T1 JOIN model_list AS T2 ON T1.MakeId = T2.ModelId JOIN cars_data AS T3 ON T2.ModelId = T3.Id WHERE T3.Weight < (SELECT AVG(Weight) FROM cars_data)",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: ambiguous column name: Model"
+        },
+        {
+            "index": 98,
+            "db_id": "car_1",
+            "question": "What is the model for the car with a weight smaller than the average?",
+            "expected_sql": "SELECT T1.model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T2.Weight  <  (SELECT avg(Weight) FROM CARS_DATA)",
+            "generated_sql": "SELECT * FROM cars_data WHERE Weight < (SELECT AVG(Weight) FROM cars_data);",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 99,
+            "db_id": "car_1",
+            "question": "Find the name of the makers that produced some cars in the year of 1970?",
+            "expected_sql": "SELECT DISTINCT T1.Maker FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker JOIN CAR_NAMES AS T3 ON T2.model  =  T3.model JOIN CARS_DATA AS T4 ON T3.MakeId  =  T4.id WHERE T4.year  =  '1970';",
+            "generated_sql": "SELECT DISTINCT car_makers.Maker FROM car_makers \nJOIN model_list ON car_makers.Id = model_list.Maker \nJOIN cars_data ON model_list.ModelId = cars_data.Id \nWHERE cars_data.Year = 1970;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 100,
+            "db_id": "car_1",
+            "question": "What is the name of the different car makers who produced a car in 1970?",
+            "expected_sql": "SELECT DISTINCT T1.Maker FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker JOIN CAR_NAMES AS T3 ON T2.model  =  T3.model JOIN CARS_DATA AS T4 ON T3.MakeId  =  T4.id WHERE T4.year  =  '1970';",
+            "generated_sql": "SELECT DISTINCT car_makers.Maker FROM car_makers JOIN cars_data ON car_makers.Id = cars_data.Year = 1970",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 101,
+            "db_id": "car_1",
+            "question": "Find the make and production time of the cars that were produced in the earliest year?",
+            "expected_sql": "SELECT T2.Make ,  T1.Year FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.Id  =  T2.MakeId WHERE T1.Year  =  (SELECT min(YEAR) FROM CARS_DATA);",
+            "generated_sql": "SELECT T1.Make, MIN(T1.Year) AS ProductionTime \nFROM car_names AS T1 \nJOIN cars_data AS T2 ON T1.MakeId = T2.Id \nGROUP BY T1.Make;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: T1.Year"
+        },
+        {
+            "index": 102,
+            "db_id": "car_1",
+            "question": "What is the maker of the carr produced in the earliest year and what year was it?",
+            "expected_sql": "SELECT T2.Make ,  T1.Year FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.Id  =  T2.MakeId WHERE T1.Year  =  (SELECT min(YEAR) FROM CARS_DATA);",
+            "generated_sql": "SELECT c.Maker, c.Year FROM cars_data c WHERE c.Year = (SELECT MIN(c2.Year) FROM cars_data c2);",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: c.Maker"
+        },
+        {
+            "index": 103,
+            "db_id": "car_1",
+            "question": "Which distinct car models are the produced after 1980?",
+            "expected_sql": "SELECT DISTINCT T1.model FROM MODEL_LIST AS T1 JOIN CAR_NAMES AS T2 ON T1.model  =  T2.model JOIN CARS_DATA AS T3 ON T2.MakeId  =  T3.id WHERE T3.year  >  1980;",
+            "generated_sql": "SELECT DISTINCT T2.Model FROM model_list AS T1 JOIN car_makers AS T2 ON T1.Maker = T2.Id WHERE T2.Year > 1980",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: T2.Model"
+        },
+        {
+            "index": 104,
+            "db_id": "car_1",
+            "question": "What are the different models for the cards produced after 1980?",
+            "expected_sql": "SELECT DISTINCT T1.model FROM MODEL_LIST AS T1 JOIN CAR_NAMES AS T2 ON T1.model  =  T2.model JOIN CARS_DATA AS T3 ON T2.MakeId  =  T3.id WHERE T3.year  >  1980;",
+            "generated_sql": "SELECT DISTINCT Model FROM model_list AS T1 JOIN car_makers AS T2 ON T1.Maker = T2.Id JOIN cars_data AS T3 ON T2.Id = T1.Maker WHERE T3.Year > 1980;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 105,
+            "db_id": "car_1",
+            "question": "How many car makers are there in each continents? List the continent name and the count.",
+            "expected_sql": "SELECT T1.Continent ,  count(*) FROM CONTINENTS AS T1 JOIN COUNTRIES AS T2 ON T1.ContId  =  T2.continent JOIN car_makers AS T3 ON T2.CountryId  =  T3.Country GROUP BY T1.Continent;",
+            "generated_sql": "SELECT C.Continent, COUNT(*) AS MakerCount\nFROM car_makers CM\nJOIN countries C ON CM.Country = C.CountryName\nGROUP BY C.Continent;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 106,
+            "db_id": "car_1",
+            "question": "What is the name of each continent and how many car makers are there in each one?",
+            "expected_sql": "SELECT T1.Continent ,  count(*) FROM CONTINENTS AS T1 JOIN COUNTRIES AS T2 ON T1.ContId  =  T2.continent JOIN car_makers AS T3 ON T2.CountryId  =  T3.Country GROUP BY T1.Continent;",
+            "generated_sql": "SELECT T1.Continent, COUNT(*) \nFROM countries AS T1 \nGROUP BY T1.Continent",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 107,
+            "db_id": "car_1",
+            "question": "Which of the countries has the most car makers? List the country name.",
+            "expected_sql": "SELECT T2.CountryName FROM CAR_MAKERS AS T1 JOIN COUNTRIES AS T2 ON T1.Country  =  T2.CountryId GROUP BY T1.Country ORDER BY Count(*) DESC LIMIT 1;",
+            "generated_sql": "SELECT T2.CountryName FROM countries AS T1 JOIN car_makers AS T2 ON T1.CountryId = T2.Country GROUP BY T1.CountryId ORDER BY COUNT(*) DESC LIMIT 1;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: T2.CountryName"
+        },
+        {
+            "index": 108,
+            "db_id": "car_1",
+            "question": "What is the name of the country with the most car makers?",
+            "expected_sql": "SELECT T2.CountryName FROM CAR_MAKERS AS T1 JOIN COUNTRIES AS T2 ON T1.Country  =  T2.CountryId GROUP BY T1.Country ORDER BY Count(*) DESC LIMIT 1;",
+            "generated_sql": "SELECT T1.CountryName FROM countries AS T1 JOIN car_makers AS T2 ON T1.CountryId = T2.Country GROUP BY T1.CountryName ORDER BY COUNT(*) DESC LIMIT 1;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 109,
+            "db_id": "car_1",
+            "question": "How many car models are produced by each maker ? Only list the count and the maker full name .",
+            "expected_sql": "select count(*) ,  t2.fullname from model_list as t1 join car_makers as t2 on t1.maker  =  t2.id group by t2.id;",
+            "generated_sql": "SELECT T1.Maker, COUNT(*) AS count \nFROM model_list AS T1 \nJOIN car_makers AS T2 ON T1.Maker = T2.Id \nGROUP BY T1.Maker, T2.FullName",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 110,
+            "db_id": "car_1",
+            "question": "What is the number of car models that are produced by each maker and what is the id and full name of each maker?",
+            "expected_sql": "SELECT Count(*) ,  T2.FullName ,  T2.id FROM MODEL_LIST AS T1 JOIN CAR_MAKERS AS T2 ON T1.Maker  =  T2.Id GROUP BY T2.id;",
+            "generated_sql": "SELECT M.Maker, M.FullName, COUNT(*) AS ModelCount\nFROM car_makers M\nJOIN model_list ML ON M.Id = ML.Maker\nGROUP BY M.Id, M.FullName;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 111,
+            "db_id": "car_1",
+            "question": "What is the accelerate of the car make amc hornet sportabout (sw)?",
+            "expected_sql": "SELECT T1.Accelerate FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.Id  =  T2.MakeId WHERE T2.Make  =  'amc hornet sportabout (sw)';",
+            "generated_sql": "SELECT T1.Accelerate FROM cars_data AS T1 JOIN car_names AS T2 ON T1.Id = T2.MakeId WHERE T2.Make = 'AMC' AND T2.Model = 'Hornet Sportabout'",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 112,
+            "db_id": "car_1",
+            "question": "How much does the car accelerate that makes amc hornet sportabout (sw)?",
+            "expected_sql": "SELECT T1.Accelerate FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.Id  =  T2.MakeId WHERE T2.Make  =  'amc hornet sportabout (sw)';",
+            "generated_sql": "SELECT * FROM cars_data WHERE Make = 'AMC' AND Model = 'Hornet Sportabout' AND Accelerate IS NOT NULL",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: Make"
+        },
+        {
+            "index": 113,
+            "db_id": "car_1",
+            "question": "How many car makers are there in france?",
+            "expected_sql": "SELECT count(*) FROM CAR_MAKERS AS T1 JOIN COUNTRIES AS T2 ON T1.Country  =  T2.CountryId WHERE T2.CountryName  =  'france';",
+            "generated_sql": "SELECT COUNT(*) FROM car_makers WHERE Country = 'France';",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 114,
+            "db_id": "car_1",
+            "question": "What is the number of makers of care in France?",
+            "expected_sql": "SELECT count(*) FROM CAR_MAKERS AS T1 JOIN COUNTRIES AS T2 ON T1.Country  =  T2.CountryId WHERE T2.CountryName  =  'france';",
+            "generated_sql": "SELECT COUNT(*) FROM car_makers WHERE Country = 'France';",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 115,
+            "db_id": "car_1",
+            "question": "How many car models are produced in the usa?",
+            "expected_sql": "SELECT count(*) FROM MODEL_LIST AS T1 JOIN CAR_MAKERS AS T2 ON T1.Maker  =  T2.Id JOIN COUNTRIES AS T3 ON T2.Country  =  T3.CountryId WHERE T3.CountryName  =  'usa';",
+            "generated_sql": "SELECT COUNT(*) FROM model_list AS T1 JOIN car_makers AS T2 ON T1.Maker = T2.Id WHERE T2.Country = 'USA';",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 116,
+            "db_id": "car_1",
+            "question": "What is the count of the car models produced in the United States?",
+            "expected_sql": "SELECT count(*) FROM MODEL_LIST AS T1 JOIN CAR_MAKERS AS T2 ON T1.Maker  =  T2.Id JOIN COUNTRIES AS T3 ON T2.Country  =  T3.CountryId WHERE T3.CountryName  =  'usa';",
+            "generated_sql": "SELECT COUNT(*) FROM car_names WHERE Make IN (SELECT Country FROM car_makers WHERE Country = 'United States')",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 117,
+            "db_id": "car_1",
+            "question": "What is the average miles per gallon(mpg) of the cars with 4 cylinders?",
+            "expected_sql": "SELECT avg(mpg) FROM CARS_DATA WHERE Cylinders  =  4;",
+            "generated_sql": "SELECT AVG(T1.MPG) FROM cars_data AS T1 WHERE T1.Cylinders = 4",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 118,
+            "db_id": "car_1",
+            "question": "What is the average miles per gallon of all the cards with 4 cylinders?",
+            "expected_sql": "SELECT avg(mpg) FROM CARS_DATA WHERE Cylinders  =  4;",
+            "generated_sql": "SELECT AVG(MPG) FROM cars_data WHERE Cylinders = 4",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 119,
+            "db_id": "car_1",
+            "question": "What is the smallest weight of the car produced with 8 cylinders on 1974 ?",
+            "expected_sql": "select min(weight) from cars_data where cylinders  =  8 and year  =  1974",
+            "generated_sql": "SELECT MIN(Weight) FROM cars_data WHERE Cylinders = 8 AND Year = 1974;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 120,
+            "db_id": "car_1",
+            "question": "What is the minimum weight of the car with 8 cylinders produced in 1974 ?",
+            "expected_sql": "select min(weight) from cars_data where cylinders  =  8 and year  =  1974",
+            "generated_sql": "SELECT MIN(Weight) FROM cars_data WHERE Cylinders = 8 AND Year = 1974",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 121,
+            "db_id": "car_1",
+            "question": "What are all the makers and models?",
+            "expected_sql": "SELECT Maker ,  Model FROM MODEL_LIST;",
+            "generated_sql": "SELECT DISTINCT T1.Maker, T2.Model FROM car_makers AS T1 JOIN model_list AS T2 ON T1.Id = T2.Maker;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 122,
+            "db_id": "car_1",
+            "question": "What are the makers and models?",
+            "expected_sql": "SELECT Maker ,  Model FROM MODEL_LIST;",
+            "generated_sql": "SELECT DISTINCT T1.Maker, T2.Model FROM car_makers AS T1 JOIN model_list AS T2 ON T1.Id = T2.Maker;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 123,
+            "db_id": "car_1",
+            "question": "What are the countries having at least one car maker? List name and id.",
+            "expected_sql": "SELECT T1.CountryName ,  T1.CountryId FROM COUNTRIES AS T1 JOIN CAR_MAKERS AS T2 ON T1.CountryId  =  T2.Country GROUP BY T1.CountryId HAVING count(*)  >=  1;",
+            "generated_sql": "SELECT T1.CountryName, T1.CountryId FROM countries AS T1 WHERE T1.CountryId IN (SELECT T2.Country FROM car_makers AS T2);",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 124,
+            "db_id": "car_1",
+            "question": "What are the names and ids of all countries with at least one car maker?",
+            "expected_sql": "SELECT T1.CountryName ,  T1.CountryId FROM COUNTRIES AS T1 JOIN CAR_MAKERS AS T2 ON T1.CountryId  =  T2.Country GROUP BY T1.CountryId HAVING count(*)  >=  1;",
+            "generated_sql": "SELECT T1.CountryId, T1.CountryName FROM countries AS T1 WHERE EXISTS (SELECT 1 FROM car_makers AS T2 WHERE T2.Country = T1.CountryId);",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 125,
+            "db_id": "car_1",
+            "question": "What is the number of the cars with horsepower more than 150?",
+            "expected_sql": "SELECT count(*) FROM CARS_DATA WHERE horsepower  >  150;",
+            "generated_sql": "SELECT Id FROM cars_data WHERE Horsepower > '150'",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 126,
+            "db_id": "car_1",
+            "question": "What is the number of cars with a horsepower greater than 150?",
+            "expected_sql": "SELECT count(*) FROM CARS_DATA WHERE horsepower  >  150;",
+            "generated_sql": "SELECT COUNT(*) FROM cars_data WHERE Horsepower > '150';",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 127,
+            "db_id": "car_1",
+            "question": "What is the average weight of cars each year?",
+            "expected_sql": "SELECT avg(Weight) ,  YEAR FROM CARS_DATA GROUP BY YEAR;",
+            "generated_sql": "SELECT AVG(Weight) FROM cars_data GROUP BY Year;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 128,
+            "db_id": "car_1",
+            "question": "What is the average weight and year for each year?",
+            "expected_sql": "SELECT avg(Weight) ,  YEAR FROM CARS_DATA GROUP BY YEAR;",
+            "generated_sql": "SELECT AVG(Weight), Year FROM cars_data GROUP BY Year;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 129,
+            "db_id": "car_1",
+            "question": "Which countries in europe have at least 3 car manufacturers?",
+            "expected_sql": "SELECT T1.CountryName FROM COUNTRIES AS T1 JOIN CONTINENTS AS T2 ON T1.Continent  =  T2.ContId JOIN CAR_MAKERS AS T3 ON T1.CountryId  =  T3.Country WHERE T2.Continent  =  'europe' GROUP BY T1.CountryName HAVING count(*)  >=  3;",
+            "generated_sql": "SELECT DISTINCT C.CountryName FROM countries C WHERE C.Continent = 'Europe' AND C.CountryId IN (SELECT car_makers.Country FROM car_makers GROUP BY car_makers.Country HAVING COUNT(*) >= 3);",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 130,
+            "db_id": "car_1",
+            "question": "What are the names of all European countries with at least 3 manufacturers?",
+            "expected_sql": "SELECT T1.CountryName FROM COUNTRIES AS T1 JOIN CONTINENTS AS T2 ON T1.Continent  =  T2.ContId JOIN CAR_MAKERS AS T3 ON T1.CountryId  =  T3.Country WHERE T2.Continent  =  'europe' GROUP BY T1.CountryName HAVING count(*)  >=  3;",
+            "generated_sql": "SELECT T2.CountryName \nFROM countries AS T1 JOIN car_makers AS T2 ON T1.CountryId = T2.Country \nWHERE T1.Continent = 'Europe' GROUP BY T1.CountryId, T2.CountryName \nHAVING COUNT(DISTINCT T2.Maker) >= 3;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: T2.CountryName"
+        },
+        {
+            "index": 131,
+            "db_id": "car_1",
+            "question": "What is the maximum horsepower and the make of the car models with 3 cylinders?",
+            "expected_sql": "SELECT T2.horsepower ,  T1.Make FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T2.cylinders  =  3 ORDER BY T2.horsepower DESC LIMIT 1;",
+            "generated_sql": "SELECT T1.Make, MAX(T2.Horsepower) FROM car_names AS T1 JOIN cars_data AS T2 ON T1.Model = T2.Id WHERE T2.Cylinders = 3 GROUP BY T1.Make",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 132,
+            "db_id": "car_1",
+            "question": "What is the largest amount of horsepower for the models with 3 cylinders and what make is it?",
+            "expected_sql": "SELECT T2.horsepower ,  T1.Make FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T2.cylinders  =  3 ORDER BY T2.horsepower DESC LIMIT 1;",
+            "generated_sql": "SELECT T2.Make, MAX(T1.Horsepower) \nFROM cars_data AS T1 JOIN car_names AS T2 ON T1.MakeId = T2.MakeId \nWHERE T1.Cylinders = 3",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: T1.MakeId"
+        },
+        {
+            "index": 133,
+            "db_id": "car_1",
+            "question": "Which model saves the most gasoline? That is to say, have the maximum miles per gallon.",
+            "expected_sql": "SELECT T1.Model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id ORDER BY T2.mpg DESC LIMIT 1;",
+            "generated_sql": "SELECT Model FROM car_names AS T1 JOIN model_list AS T2 ON T1.MakeId = T2.ModelId JOIN cars_data AS T3 ON T1.Make = T2.Make WHERE T3.MPG = (SELECT MAX(T4.MPG) FROM cars_data AS T4);",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: ambiguous column name: Model"
+        },
+        {
+            "index": 134,
+            "db_id": "car_1",
+            "question": "What is the car model with the highest mpg ?",
+            "expected_sql": "select t1.model from car_names as t1 join cars_data as t2 on t1.makeid  =  t2.id order by t2.mpg desc limit 1;",
+            "generated_sql": "SELECT Model FROM model_list AS T1 JOIN car_names AS T2 ON T1.Maker = T2.Make WHERE T2.Model IN (SELECT Model FROM cars_data WHERE MPG = (SELECT MAX(MPG) FROM cars_data));",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: ambiguous column name: Model"
+        },
+        {
+            "index": 135,
+            "db_id": "car_1",
+            "question": "What is the average horsepower of the cars before 1980?",
+            "expected_sql": "SELECT avg(horsepower) FROM CARS_DATA WHERE YEAR  <  1980;",
+            "generated_sql": "SELECT AVG(Horsepower) FROM cars_data WHERE Year < 1980",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 136,
+            "db_id": "car_1",
+            "question": "What is the average horsepower for all cars produced before 1980 ?",
+            "expected_sql": "select avg(horsepower) from cars_data where year  <  1980;",
+            "generated_sql": "SELECT AVG(Horsepower) FROM cars_data WHERE Year < 1980",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 137,
+            "db_id": "car_1",
+            "question": "What is the average edispl of the cars of model volvo?",
+            "expected_sql": "SELECT avg(T2.edispl) FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T1.Model  =  'volvo';",
+            "generated_sql": "SELECT AVG(Edispl) FROM cars_data WHERE Make = 'Volvo';",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: Make"
+        },
+        {
+            "index": 138,
+            "db_id": "car_1",
+            "question": "What is the average edispl for all volvos?",
+            "expected_sql": "SELECT avg(T2.edispl) FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T1.Model  =  'volvo';",
+            "generated_sql": "SELECT AVG(Edispl) FROM cars_data WHERE Make = 'VOLVO';",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: Make"
+        },
+        {
+            "index": 139,
+            "db_id": "car_1",
+            "question": "What is the maximum accelerate for different number of cylinders?",
+            "expected_sql": "SELECT max(Accelerate) ,  Cylinders FROM CARS_DATA GROUP BY Cylinders;",
+            "generated_sql": "SELECT T1.Accelerate FROM cars_data AS T1 GROUP BY T1.Cylinders ORDER BY MAX(T1.Accelerate)",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 140,
+            "db_id": "car_1",
+            "question": "What is the maximum accelerate for all the different cylinders?",
+            "expected_sql": "SELECT max(Accelerate) ,  Cylinders FROM CARS_DATA GROUP BY Cylinders;",
+            "generated_sql": "SELECT MAX(Weight) FROM cars_data;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 141,
+            "db_id": "car_1",
+            "question": "Which model has the most version(make) of cars?",
+            "expected_sql": "SELECT Model FROM CAR_NAMES GROUP BY Model ORDER BY count(*) DESC LIMIT 1;",
+            "generated_sql": "SELECT T1.Model FROM model_list AS T1 GROUP BY T1.Model ORDER BY COUNT(T2.Make) DESC LIMIT 1;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: T2.Make"
+        },
+        {
+            "index": 142,
+            "db_id": "car_1",
+            "question": "What model has the most different versions?",
+            "expected_sql": "SELECT Model FROM CAR_NAMES GROUP BY Model ORDER BY count(*) DESC LIMIT 1;",
+            "generated_sql": "SELECT T2.Model FROM model_list AS T1 JOIN car_makers AS T2 ON T1.Maker = T2.Id GROUP BY T1.Model ORDER BY COUNT(T1.Model) DESC LIMIT 1",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: T2.Model"
+        },
+        {
+            "index": 143,
+            "db_id": "car_1",
+            "question": "How many cars have more than 4 cylinders?",
+            "expected_sql": "SELECT count(*) FROM CARS_DATA WHERE Cylinders  >  4;",
+            "generated_sql": "SELECT COUNT(*) FROM cars_data WHERE Cylinders > 4",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 144,
+            "db_id": "car_1",
+            "question": "What is the number of cars with more than 4 cylinders?",
+            "expected_sql": "SELECT count(*) FROM CARS_DATA WHERE Cylinders  >  4;",
+            "generated_sql": "SELECT COUNT(*) FROM cars_data WHERE Cylinders > 4",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 145,
+            "db_id": "car_1",
+            "question": "how many cars were produced in 1980?",
+            "expected_sql": "SELECT count(*) FROM CARS_DATA WHERE YEAR  =  1980;",
+            "generated_sql": "SELECT COUNT(*) FROM cars_data WHERE Year = 1980",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 146,
+            "db_id": "car_1",
+            "question": "In 1980, how many cars were made?",
+            "expected_sql": "SELECT count(*) FROM CARS_DATA WHERE YEAR  =  1980;",
+            "generated_sql": "SELECT COUNT(*) FROM cars_data WHERE Year = 1980;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 147,
+            "db_id": "car_1",
+            "question": "How many car models were produced by the maker with full name American Motor Company?",
+            "expected_sql": "SELECT count(*) FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker WHERE T1.FullName  =  'American Motor Company';",
+            "generated_sql": "SELECT COUNT(*) FROM model_list WHERE Maker = (SELECT Id FROM car_makers WHERE FullName = 'American Motor Company');",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 148,
+            "db_id": "car_1",
+            "question": "What is the number of car models created by the car maker American Motor Company?",
+            "expected_sql": "SELECT count(*) FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker WHERE T1.FullName  =  'American Motor Company';",
+            "generated_sql": "SELECT COUNT(*) FROM model_list WHERE Maker = 'American Motor Company';",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 149,
+            "db_id": "car_1",
+            "question": "Which makers designed more than 3 car models? List full name and the id.",
+            "expected_sql": "SELECT T1.FullName ,  T1.Id FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker GROUP BY T1.Id HAVING count(*)  >  3;",
+            "generated_sql": "SELECT T1.Maker, T1.Id FROM car_makers AS T1 JOIN model_list AS T2 ON T1.Id = T2.Maker GROUP BY T1.Maker, T1.Id HAVING COUNT(*) > 3",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 150,
+            "db_id": "car_1",
+            "question": "What are the names and ids of all makers with more than 3 models?",
+            "expected_sql": "SELECT T1.FullName ,  T1.Id FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker GROUP BY T1.Id HAVING count(*)  >  3;",
+            "generated_sql": "SELECT T1.Id, T1.Maker FROM car_makers AS T1 JOIN model_list AS T2 ON T1.Id = T2.Maker GROUP BY T1.Id, T1.Maker HAVING COUNT(*) > 3",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 151,
+            "db_id": "car_1",
+            "question": "Which distinctive models are produced by maker with the full name General Motors or weighing more than 3500?",
+            "expected_sql": "SELECT DISTINCT T2.Model FROM CAR_NAMES AS T1 JOIN MODEL_LIST AS T2 ON T1.Model  =  T2.Model JOIN CAR_MAKERS AS T3 ON T2.Maker  =  T3.Id JOIN CARS_DATA AS T4 ON T1.MakeId  =  T4.Id WHERE T3.FullName  =  'General Motors' OR T4.weight  >  3500;",
+            "generated_sql": "SELECT T1.Model FROM model_list AS T1 JOIN car_makers AS T2 ON T1.Maker = T2.Id WHERE T2.FullName = 'General Motors' AND T1.Model IN (SELECT T3.Model FROM cars_data AS T3 WHERE T3.Weight > 3500);",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: T3.Model"
+        },
+        {
+            "index": 152,
+            "db_id": "car_1",
+            "question": "What are the different models created by either the car maker General Motors or weighed more than 3500?",
+            "expected_sql": "SELECT DISTINCT T2.Model FROM CAR_NAMES AS T1 JOIN MODEL_LIST AS T2 ON T1.Model  =  T2.Model JOIN CAR_MAKERS AS T3 ON T2.Maker  =  T3.Id JOIN CARS_DATA AS T4 ON T1.MakeId  =  T4.Id WHERE T3.FullName  =  'General Motors' OR T4.weight  >  3500;",
+            "generated_sql": "SELECT T2.Model \nFROM model_list AS T1 \nJOIN car_makers AS T2 ON T1.Maker = T2.Id \nWHERE T2.FullName = 'General Motors' \nUNION \nSELECT T1.Model \nFROM cars_data AS T1 \nWHERE T1.Weight > 3500;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: T1.Model"
+        },
+        {
+            "index": 153,
+            "db_id": "car_1",
+            "question": "In which years cars were produced weighing no less than 3000 and no more than 4000 ?",
+            "expected_sql": "select distinct year from cars_data where weight between 3000 and 4000;",
+            "generated_sql": "SELECT Year FROM cars_data WHERE Weight >= 3000 AND Weight <= 4000",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 154,
+            "db_id": "car_1",
+            "question": "What are the different years in which there were cars produced that weighed less than 4000 and also cars that weighted more than 3000 ?",
+            "expected_sql": "select distinct year from cars_data where weight between 3000 and 4000;",
+            "generated_sql": "SELECT DISTINCT Year FROM cars_data WHERE Weight < 4000 OR Weight > 3000",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 155,
+            "db_id": "car_1",
+            "question": "What is the horsepower of the car with the largest accelerate?",
+            "expected_sql": "SELECT T1.horsepower FROM CARS_DATA AS T1 ORDER BY T1.accelerate DESC LIMIT 1;",
+            "generated_sql": "SELECT Horsepower FROM cars_data WHERE Accelerate = (SELECT MAX(Accelerate) FROM cars_data);",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 156,
+            "db_id": "car_1",
+            "question": "What is the horsepower of the car with the greatest accelerate?",
+            "expected_sql": "SELECT T1.horsepower FROM CARS_DATA AS T1 ORDER BY T1.accelerate DESC LIMIT 1;",
+            "generated_sql": "SELECT MAX(T1.Horsepower) FROM cars_data AS T1 ORDER BY T1.Accelerate DESC LIMIT 1;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 157,
+            "db_id": "car_1",
+            "question": "For model volvo, how many cylinders does the car with the least accelerate have?",
+            "expected_sql": "SELECT T1.cylinders FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.Id  =  T2.MakeId WHERE T2.Model  =  'volvo' ORDER BY T1.accelerate ASC LIMIT 1;",
+            "generated_sql": "SELECT T2.Cylinders FROM cars_data AS T1 JOIN car_names AS T2 ON T1.Id = T2.Id WHERE T2.Make = 'Volvo' ORDER BY T1.Accelerate LIMIT 1;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: T2.Cylinders"
+        },
+        {
+            "index": 158,
+            "db_id": "car_1",
+            "question": "For a volvo model, how many cylinders does the version with least accelerate have?",
+            "expected_sql": "SELECT T1.cylinders FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.Id  =  T2.MakeId WHERE T2.Model  =  'volvo' ORDER BY T1.accelerate ASC LIMIT 1;",
+            "generated_sql": "SELECT T1.Cylinders FROM cars_data AS T1 JOIN car_names AS T2 ON T1.Id = T2.MakeId WHERE T2.Make = 'Volvo' AND T1.Accelerate IN (SELECT MIN(T3.Accelerate) FROM cars_data AS T3 WHERE T3.Make = 'Volvo');",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: T3.Make"
+        },
+        {
+            "index": 159,
+            "db_id": "car_1",
+            "question": "How many cars have a larger accelerate than the car with the largest horsepower?",
+            "expected_sql": "SELECT COUNT(*) FROM CARS_DATA WHERE Accelerate  >  ( SELECT Accelerate FROM CARS_DATA ORDER BY Horsepower DESC LIMIT 1 );",
+            "generated_sql": "SELECT COUNT(*) FROM cars_data WHERE Accelerate > (SELECT MAX(Horsepower) FROM cars_data);",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 160,
+            "db_id": "car_1",
+            "question": "What is the number of cars with a greater accelerate than the one with the most horsepower?",
+            "expected_sql": "SELECT COUNT(*) FROM CARS_DATA WHERE Accelerate  >  ( SELECT Accelerate FROM CARS_DATA ORDER BY Horsepower DESC LIMIT 1 );",
+            "generated_sql": "SELECT COUNT(*) FROM cars_data WHERE Accelerate > (SELECT MAX(Horsepower) FROM cars_data);",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 161,
+            "db_id": "car_1",
+            "question": "How many countries has more than 2 car makers ?",
+            "expected_sql": "select count(*) from countries as t1 join car_makers as t2 on t1.countryid  =  t2.country group by t1.countryid having count(*)  >  2",
+            "generated_sql": "SELECT COUNT(*) FROM countries WHERE (SELECT COUNT(*) FROM car_makers WHERE car_makers.Country = countries.CountryName) > 2",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 162,
+            "db_id": "car_1",
+            "question": "What is the number of countries with more than 2 car makers ?",
+            "expected_sql": "select count(*) from countries as t1 join car_makers as t2 on t1.countryid  =  t2.country group by t1.countryid having count(*)  >  2",
+            "generated_sql": "SELECT COUNT(*) FROM countries WHERE CountryId IN (SELECT Country FROM car_makers GROUP BY Country HAVING COUNT(*) > 2);",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 163,
+            "db_id": "car_1",
+            "question": "How many cars has over 6 cylinders?",
+            "expected_sql": "SELECT COUNT(*) FROM CARS_DATA WHERE Cylinders  >  6;",
+            "generated_sql": "SELECT COUNT(*) FROM cars_data WHERE Cylinders > 6",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 164,
+            "db_id": "car_1",
+            "question": "What is the number of carsw ith over 6 cylinders?",
+            "expected_sql": "SELECT COUNT(*) FROM CARS_DATA WHERE Cylinders  >  6;",
+            "generated_sql": "SELECT COUNT(*) FROM cars_data WHERE Cylinders > 6",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 165,
+            "db_id": "car_1",
+            "question": "For the cars with 4 cylinders, which model has the largest horsepower?",
+            "expected_sql": "SELECT T1.Model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T2.Cylinders  =  4 ORDER BY T2.horsepower DESC LIMIT 1;",
+            "generated_sql": "SELECT T2.Model \nFROM car_names AS T1 JOIN model_list AS T2 ON T1.Make = T2.Maker \nWHERE T2.ModelId IN (SELECT ModelId FROM model_list WHERE Cylinders = 4) \nORDER BY T1.Horsepower DESC LIMIT 1;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: Cylinders"
+        },
+        {
+            "index": 166,
+            "db_id": "car_1",
+            "question": "For all of the 4 cylinder cars, which model has the most horsepower?",
+            "expected_sql": "SELECT T1.Model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T2.Cylinders  =  4 ORDER BY T2.horsepower DESC LIMIT 1;",
+            "generated_sql": "SELECT T1.Model FROM car_names AS T1 JOIN model_list AS T2 ON T1.Make = T2.Maker JOIN cars_data AS T3 ON T1.Model = T3.Id WHERE T3.Cylinders = 4 AND T3.Horsepower = (SELECT MAX(T4.Horsepower) FROM cars_data AS T4 WHERE T4.Cylinders = 4)",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 167,
+            "db_id": "car_1",
+            "question": "Among the cars with more than lowest horsepower, which ones do not have more than 3 cylinders? List the car makeid and make name.",
+            "expected_sql": "SELECT T2.MakeId ,  T2.Make FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.Id  =  T2.MakeId WHERE T1.Horsepower  >  (SELECT min(Horsepower) FROM CARS_DATA) AND T1.Cylinders  <=  3;",
+            "generated_sql": "SELECT T1.MakeId, T1.Make \nFROM cars_data AS T1 \nJOIN car_names AS T2 ON T1.Id = T2.MakeId \nWHERE T1.Horsepower > (SELECT MIN(Horsepower) FROM cars_data) AND T1.Cylinders <= 3;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: T1.MakeId"
+        },
+        {
+            "index": 168,
+            "db_id": "car_1",
+            "question": "Among the cars that do not have the minimum horsepower , what are the make ids and names of all those with less than 4 cylinders ?",
+            "expected_sql": "select t2.makeid ,  t2.make from cars_data as t1 join car_names as t2 on t1.id  =  t2.makeid where t1.horsepower  >  (select min(horsepower) from cars_data) and t1.cylinders  <  4;",
+            "generated_sql": "SELECT T1.MakeId, T1.Model, T2.Maker\nFROM cars_data AS T1\nJOIN car_makers AS T2 ON T1.Make = T2.Maker\nWHERE T1.Horsepower!='minimum' AND T1.Cylinders < 4",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: T1.MakeId"
+        },
+        {
+            "index": 169,
+            "db_id": "car_1",
+            "question": "What is the maximum miles per gallon of the car with 8 cylinders or produced before 1980 ?",
+            "expected_sql": "select max(mpg) from cars_data where cylinders  =  8 or year  <  1980",
+            "generated_sql": "SELECT MAX(T1.MPG) FROM cars_data AS T1 WHERE T1.Cylinders = 8 AND T1.Year < 1980",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 170,
+            "db_id": "car_1",
+            "question": "What is the maximum mpg of the cars that had 8 cylinders or that were produced before 1980 ?",
+            "expected_sql": "select max(mpg) from cars_data where cylinders  =  8 or year  <  1980",
+            "generated_sql": "SELECT MAX(T1.MPG) FROM cars_data AS T1 WHERE T1.Cylinders = 8 OR T1.Year < 1980",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 171,
+            "db_id": "car_1",
+            "question": "Which models are lighter than 3500 but not built by the 'Ford Motor Company'?",
+            "expected_sql": "SELECT DISTINCT T1.model FROM MODEL_LIST AS T1 JOIN CAR_NAMES AS T2 ON T1.Model  =  T2.Model JOIN CARS_DATA AS T3 ON T2.MakeId  =  T3.Id JOIN CAR_MAKERS AS T4 ON T1.Maker  =  T4.Id WHERE T3.weight  <  3500 AND T4.FullName != 'Ford Motor Company';",
+            "generated_sql": "SELECT T2.Model FROM car_names AS T1 JOIN model_list AS T2 ON T1.MakeId = T2.Maker JOIN cars_data AS T3 ON T2.ModelId = T3.Id WHERE T3.Weight < 3500 AND T1.Make!= 'Ford Motor Company';",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 172,
+            "db_id": "car_1",
+            "question": "What are the different models wthat are lighter than 3500 but were not built by the Ford Motor Company?",
+            "expected_sql": "SELECT DISTINCT T1.model FROM MODEL_LIST AS T1 JOIN CAR_NAMES AS T2 ON T1.Model  =  T2.Model JOIN CARS_DATA AS T3 ON T2.MakeId  =  T3.Id JOIN CAR_MAKERS AS T4 ON T1.Maker  =  T4.Id WHERE T3.weight  <  3500 AND T4.FullName != 'Ford Motor Company';",
+            "generated_sql": "SELECT T2.Model \nFROM car_names AS T1 JOIN model_list AS T2 ON T1.MakeId = T2.Maker \nWHERE T2.Model NOT IN (SELECT T3.Model FROM car_names AS T3 JOIN car_makers AS T4 ON T3.Make = T4.Maker WHERE T4.FullName = 'Ford Motor Company') AND T1.Weight < 3500;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: T1.Weight"
+        },
+        {
+            "index": 173,
+            "db_id": "car_1",
+            "question": "What are the name of the countries where there is not a single car maker?",
+            "expected_sql": "SELECT CountryName FROM countries EXCEPT SELECT T1.CountryName FROM countries AS T1 JOIN CAR_MAKERS AS T2 ON T1.countryId  =  T2.Country;",
+            "generated_sql": "SELECT DISTINCT COUNTRYNAME FROM countries WHERE COUNTRYID NOT IN (SELECT Country FROM car_makers)",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 174,
+            "db_id": "car_1",
+            "question": "What are the names of the countries with no car makers?",
+            "expected_sql": "SELECT CountryName FROM countries EXCEPT SELECT T1.CountryName FROM countries AS T1 JOIN CAR_MAKERS AS T2 ON T1.countryId  =  T2.Country;",
+            "generated_sql": "SELECT T1.CountryName FROM countries AS T1 WHERE NOT EXISTS (SELECT 1 FROM car_makers AS T2 WHERE T2.Country = T1.CountryName)",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 175,
+            "db_id": "car_1",
+            "question": "Which are the car makers which produce at least 2 models and more than 3 car makers ? List the id and the maker .",
+            "expected_sql": "select t1.id ,  t1.maker from car_makers as t1 join model_list as t2 on t1.id  =  t2.maker group by t1.id having count(*)  >=  2 intersect select t1.id ,  t1.maker from car_makers as t1 join model_list as t2 on t1.id  =  t2.maker join car_names as t3 on t2.model  =  t3.model group by t1.id having count(*)  >  3;",
+            "generated_sql": "SELECT T1.Id, T1.Maker \nFROM car_makers AS T1 \nJOIN model_list AS T2 ON T1.Id = T2.Maker \nGROUP BY T1.Id, T1.Maker \nHAVING COUNT(*) >= 2 AND COUNT(DISTINCT T2.Model) > 3;",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 176,
+            "db_id": "car_1",
+            "question": "What are the ids and makers of all car makers that produce at least 2 models and make more than 3 cars?",
+            "expected_sql": "SELECT T1.Id ,  T1.Maker FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker GROUP BY T1.Id HAVING count(*)  >=  2 INTERSECT SELECT T1.Id ,  T1.Maker FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker JOIN CAR_NAMES AS T3 ON T2.model  =  T3.model GROUP BY T1.Id HAVING count(*)  >  3;",
+            "generated_sql": "SELECT T1.Id, T1.Maker\nFROM car_makers AS T1\nJOIN model_list AS T2 ON T1.Id = T2.Maker\nGROUP BY T1.Id, T1.Maker\nHAVING COUNT(T2.ModelId) >= 2 AND COUNT(T3.Id) > 3\nJOIN cars_data AS T3 ON T1.Id = T3.MakeId\nGROUP BY T1.Id, T1.Maker",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: near \"JOIN\": syntax error"
+        },
+        {
+            "index": 177,
+            "db_id": "car_1",
+            "question": "What are the id and names of the countries which have more than 3 car makers or produce the 'fiat' model?",
+            "expected_sql": "SELECT T1.countryId ,  T1.CountryName FROM Countries AS T1 JOIN CAR_MAKERS AS T2 ON T1.CountryId  =  T2.Country GROUP BY T1.countryId HAVING count(*)  >  3 UNION SELECT T1.countryId ,  T1.CountryName FROM Countries AS T1 JOIN CAR_MAKERS AS T2 ON T1.CountryId  =  T2.Country JOIN MODEL_LIST AS T3 ON T2.Id  =  T3.Maker WHERE T3.Model  =  'fiat';",
+            "generated_sql": "SELECT T2.CountryName, T2.CountryId \nFROM countries AS T1 JOIN car_makers AS T2 ON T1.CountryId = T2.Country \nWHERE T2.Maker IN (SELECT Maker FROM car_names WHERE Model = 'fiat') OR COUNT(*) > 3 GROUP BY T1.CountryId, T1.CountryName HAVING COUNT(*) > 3",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: T2.CountryName"
+        },
+        {
+            "index": 178,
+            "db_id": "car_1",
+            "question": "What are the ids and names of all countries that either have more than 3 car makers or produce fiat model ?",
+            "expected_sql": "select t1.countryid ,  t1.countryname from countries as t1 join car_makers as t2 on t1.countryid  =  t2.country group by t1.countryid having count(*)  >  3 union select t1.countryid ,  t1.countryname from countries as t1 join car_makers as t2 on t1.countryid  =  t2.country join model_list as t3 on t2.id  =  t3.maker where t3.model  =  'fiat';",
+            "generated_sql": "SELECT T1.CountryId, T1.CountryName \nFROM countries AS T1 \nWHERE T1.CountryId IN (SELECT T2.Country FROM car_makers AS T2 GROUP BY T2.Country HAVING COUNT(*) > 3) \nOR EXISTS (SELECT * FROM car_names AS T3 WHERE T3.Make = 'Fiat' AND T3.Country = T1.CountryName);",
+            "success": false,
+            "score": 0.0,
+            "reason": "Sintaxe da query predita falhou: no such column: T3.Country"
+        },
+        {
+            "index": 179,
+            "db_id": "flight_2",
+            "question": "Which country does Airline \"JetBlue Airways\" belong to?",
+            "expected_sql": "SELECT Country FROM AIRLINES WHERE Airline  =  \"JetBlue Airways\"",
+            "generated_sql": "SELECT T1.Country FROM airlines AS T1 WHERE T1.Airline = 'JetBlue Airways';",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 180,
+            "db_id": "flight_2",
+            "question": "What country is Jetblue Airways affiliated with?",
+            "expected_sql": "SELECT Country FROM AIRLINES WHERE Airline  =  \"JetBlue Airways\"",
+            "generated_sql": "SELECT Country FROM airlines WHERE Airline = 'Jetblue Airways'",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 181,
+            "db_id": "flight_2",
+            "question": "What is the abbreviation of Airline \"JetBlue Airways\"?",
+            "expected_sql": "SELECT Abbreviation FROM AIRLINES WHERE Airline  =  \"JetBlue Airways\"",
+            "generated_sql": "SELECT Abbreviation FROM airlines WHERE Airline = 'JetBlue Airways';",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 182,
+            "db_id": "flight_2",
+            "question": "Which abbreviation corresponds to Jetblue Airways?",
+            "expected_sql": "SELECT Abbreviation FROM AIRLINES WHERE Airline  =  \"JetBlue Airways\"",
+            "generated_sql": "SELECT Abbreviation FROM airlines WHERE Airline = 'Jetblue Airways';",
+            "success": false,
+            "score": 0.0,
+            "reason": "Falha: Os resultados da execução são divergentes."
+        },
+        {
+            "index": 183,
+            "db_id": "flight_2",
+            "question": "List all airline names and their abbreviations in \"USA\".",
+            "expected_sql": "SELECT Airline ,  Abbreviation FROM AIRLINES WHERE Country  =  \"USA\"",
+            "generated_sql": "SELECT T1.Airline, T1.Abbreviation FROM airlines AS T1 WHERE T1.Country = 'USA';",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 184,
+            "db_id": "flight_2",
+            "question": "What are the airline names and abbreviations for airlines in the USA?",
+            "expected_sql": "SELECT Airline ,  Abbreviation FROM AIRLINES WHERE Country  =  \"USA\"",
+            "generated_sql": "SELECT T1.Airline, T1.Abbreviation FROM airlines AS T1 WHERE T1.Country = 'USA'",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 185,
+            "db_id": "flight_2",
+            "question": "List the airport code and name in the city of Anthony.",
+            "expected_sql": "SELECT AirportCode ,  AirportName FROM AIRPORTS WHERE city  =  \"Anthony\"",
+            "generated_sql": "SELECT T1.AirportCode, T1.AirportName FROM airports AS T1 WHERE T1.City = 'Anthony';",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 186,
+            "db_id": "flight_2",
+            "question": "Give the airport code and airport name corresonding to the city Anthony.",
+            "expected_sql": "SELECT AirportCode ,  AirportName FROM AIRPORTS WHERE city  =  \"Anthony\"",
+            "generated_sql": "SELECT AirportCode, AirportName FROM airports WHERE City = 'Anthony';",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 187,
+            "db_id": "flight_2",
+            "question": "How many airlines do we have?",
+            "expected_sql": "SELECT count(*) FROM AIRLINES",
+            "generated_sql": "SELECT COUNT(*) FROM airlines;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 188,
+            "db_id": "flight_2",
+            "question": "What is the total number of airlines?",
+            "expected_sql": "SELECT count(*) FROM AIRLINES",
+            "generated_sql": "SELECT COUNT(*) FROM airlines",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 189,
+            "db_id": "flight_2",
+            "question": "How many airports do we have?",
+            "expected_sql": "SELECT count(*) FROM AIRPORTS",
+            "generated_sql": "SELECT COUNT(*) FROM airports",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 190,
+            "db_id": "flight_2",
+            "question": "Return the number of  airports.",
+            "expected_sql": "SELECT count(*) FROM AIRPORTS",
+            "generated_sql": "SELECT COUNT(*) FROM airports",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 191,
+            "db_id": "flight_2",
+            "question": "How many flights do we have?",
+            "expected_sql": "SELECT count(*) FROM FLIGHTS",
+            "generated_sql": "SELECT COUNT(*) FROM flights;",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 192,
+            "db_id": "flight_2",
+            "question": "Return the number of flights.",
+            "expected_sql": "SELECT count(*) FROM FLIGHTS",
+            "generated_sql": "SELECT COUNT(*) FROM flights",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 193,
+            "db_id": "flight_2",
+            "question": "Which airline has abbreviation 'UAL'?",
+            "expected_sql": "SELECT Airline FROM AIRLINES WHERE Abbreviation  =  \"UAL\"",
+            "generated_sql": "SELECT Airline FROM airlines WHERE Abbreviation = 'UAL';",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 194,
+            "db_id": "flight_2",
+            "question": "Give the airline with abbreviation 'UAL'.",
+            "expected_sql": "SELECT Airline FROM AIRLINES WHERE Abbreviation  =  \"UAL\"",
+            "generated_sql": "SELECT Airline FROM airlines WHERE Abbreviation = 'UAL';",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 195,
+            "db_id": "flight_2",
+            "question": "How many airlines are from USA?",
+            "expected_sql": "SELECT count(*) FROM AIRLINES WHERE Country  =  \"USA\"",
+            "generated_sql": "SELECT COUNT(*) FROM airlines WHERE Country = 'USA'",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 196,
+            "db_id": "flight_2",
+            "question": "Return the number of airlines in the USA.",
+            "expected_sql": "SELECT count(*) FROM AIRLINES WHERE Country  =  \"USA\"",
+            "generated_sql": "SELECT COUNT(*) FROM airlines WHERE Country = 'USA';",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 197,
+            "db_id": "flight_2",
+            "question": "Which city and country is the Alton airport at?",
+            "expected_sql": "SELECT City ,  Country FROM AIRPORTS WHERE AirportName  =  \"Alton\"",
+            "generated_sql": "SELECT T1.Country, T1.City FROM airports AS T1 WHERE T1.AirportName = 'Alton'",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 198,
+            "db_id": "flight_2",
+            "question": "Give the city and country for the Alton airport.",
+            "expected_sql": "SELECT City ,  Country FROM AIRPORTS WHERE AirportName  =  \"Alton\"",
+            "generated_sql": "SELECT T1.Country, T1.City \nFROM airports AS T1 \nWHERE T1.AirportName = 'Alton';",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        },
+        {
+            "index": 199,
+            "db_id": "flight_2",
+            "question": "What is the airport name for airport 'AKO'?",
+            "expected_sql": "SELECT AirportName FROM AIRPORTS WHERE AirportCode  =  \"AKO\"",
+            "generated_sql": "SELECT AirportName FROM airports WHERE AirportCode = 'AKO'",
+            "success": true,
+            "score": 1.0,
+            "reason": "Sucesso: Os resultados da execução são idênticos."
+        }
+    ]
+}
